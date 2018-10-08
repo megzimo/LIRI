@@ -6,7 +6,7 @@ LIRI - Language Interpretation and Recognition Interface - is an application tha
 
 -----------------------------------------
  
-####APIs Utilized
+#### APIs Utilized
 * Bands in Town
 * OMDb
 * Spotify# LIRI
