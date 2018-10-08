@@ -1,4 +1,4 @@
-# liri-node-app
+# LIRI
 
 -----------------------------------------
 
@@ -9,5 +9,4 @@ LIRI - Language Interpretation and Recognition Interface - is an application tha
 #### APIs Utilized
 * Bands in Town
 * OMDb
-* Spotify# LIRI
-# LIRI
+* Spotify
