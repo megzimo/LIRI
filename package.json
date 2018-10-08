@@ -1,0 +1,20 @@
+{
+  "name": "Homework9",
+  "version": "1.0.0",
+  "description": "-----------------------------------------",
+  "main": "keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megzimo/LIRI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/megzimo/LIRI/issues"
+  },
+  "homepage": "https://github.com/megzimo/LIRI#readme"
+}
