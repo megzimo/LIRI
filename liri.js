@@ -52,12 +52,16 @@ function omdbMovie(){
             let movieReturn = "\n" + header + "\n" + "\n \t Title: " + json.Title + "\n \t Release Year: " + json.Year + "\n \t IMDb Rating: " + json.Title + "\n \t Rotten Tomatoes: " + json.Ratings[1].Value + "\n \t Country: " + json.Country + "\n \t Language: " + json.Language + "\n \t Plot: " + json.Plot + "\n \t Cast: "  + json.Actors + "\n \t" + footer;
     
             console.log(movieReturn);
+            logLiri(movieReturn);
+
         };
         if (error) {
             console.log ("Oops! Something went wrong");
         }
-    });
-}; // end omdb fn
+
+    }); // ends request
+
+}; 
 
 //////////////////////////////////////// Spotify ////////////////////////////////////////
 function spotifySong() {
@@ -75,6 +79,7 @@ function spotifySong() {
             songInfo = "\n" + header + "\n" + "\n \t Song Title: " + trackQuery + "\n \t Artist: " + data.tracks.items[0].album.artists[0].name + "\n \t Album: " + data.tracks.items[0].album.name + "\n \t view in Spotify: " + data.tracks.items[0].album.external_urls.spotify + "\n \n" + footer;
         
             console.log(songInfo);
+            logLiri(songInfo);
         }
    }) 
 }; // end spotify fn
@@ -87,7 +92,7 @@ let artist = process.argv.splice(3, process.argv.length - 1).join(" ");
         return 
     };
 
-let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=trilogy";
+let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
     request(queryURL, function (error, response, body) {
         if(!error && response.statusCode === 200) {
             var result  =  JSON.parse(body);
@@ -95,6 +100,7 @@ let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_i
             for(var i=0; i<=2; i++){
                 let concertResults = "\n" + header + "\n" + "\n \t Artist: " + artist + "\n \t Venue Name: " + result[i].venue.name + "\n \t Venue Location: " + result[i].venue.city + ", " + result[i].venue.region + "\n \t Concert Date: " + moment(result[i].datetime).format("MM/DD/YYYY") +"\n \n" + footer;
                 console.log(concertResults);
+                logLiri(concertResults);
             }; // ends for loop
         };
 
@@ -110,6 +116,7 @@ let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_i
 function twitter() {
 
 };
+
 
 //////////////////////////////////////// Do What It Says ////////////////////////////////////////
  function doWhatItSays(){
@@ -142,28 +149,30 @@ function twitter() {
                         ${footer}
                         `
                         console.log(tInfo);
+                        logLiri(tInfo);
                 });
                 break;
             }
-
-
     });
 }; // ends do what it says fn
 }; // ends liriBot fn
 
+
+//////////////////////////////////////// Log LIRI data ////////////////////////////////////////
+
+function logLiri(data){
+    fs.appendFile("log.txt", data + "\n", function(error) {
+        if(error) {
+            return console.log(error)
+        };
+    });
+}; // ends logLiri fn
+
+
+
+
+
 liriBot();
- 
-
-
-             // switch(getSong[0]){
-            //     case spotify-this-song:
-            //     spotify.search({ type: 'track', query: getSong[1]}, function(error, data) {
-            //         if (error){
-            //             console.log("Oops, something went wrong.")
-            //             return;
-            //         
-
-
 
 
 
