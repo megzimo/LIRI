@@ -8,7 +8,7 @@ Twitter - do-what-it-says
 
 require('dotenv').config();
 const keys = require("./keys.js");
-let fs = require("fs");
+const fs = require('fs');
 let request = require('request');
 let Spotify = require('node-spotify-api');
 let spotify = new Spotify(keys.spotify);
@@ -18,23 +18,27 @@ let header = "~*~*~*~*~*~*~*~*~*~*~ Your Results ~*~*~*~*~*~*~*~*~*~*~";
 let footer = "~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~*~";
 let inputQ = process.argv[2];
 
-
+function liriBot(){
 switch(inputQ){
     case "movie-this":
         omdbMovie();
-    break;
+        break;
 
     case "spotify-this-song": 
         spotifySong();
-    break;
+        break;
 
     case "concert-this":
         bandsInTown();
-    break;
+        break;
 
-    case "dow-what-it-says":
+    case "do-what-it-says":
+        doWhatItSays();
+        break;
+
+    case "tweet":
         twitter();
-    break;
+        break;
 };
 
 //////////////////////////////////////// OMDb Movies ////////////////////////////////////////
@@ -78,22 +82,22 @@ function spotifySong() {
 //////////////////////////////////////// Bands In Town ////////////////////////////////////////
 function bandsInTown() {
 let artist = process.argv.splice(3, process.argv.length - 1).join(" ");
-let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=trilogy";
+    if(artist === "") {
+        console.log("Hmm, I didn't catch that. What band are you looking for?") 
+        return 
+    };
 
+let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=trilogy";
     request(queryURL, function (error, response, body) {
         if(!error && response.statusCode === 200) {
-            var result  =  JSON.parse(body)[0];
-            let concertResults = "\n" + header + "\n" + "\n \t Artist: " + artist + "\n \t Venue Name: " + result.venue.name + "\n \t Venue Location: " + result.venue.city + "\n \t Concert Date: " + moment(result.datetime).format("MM/DD/YYYY") +"\n \n" + footer;
-            console.log(concertResults);
-
-            // if(value == undefined) {
-            //     console.log("Bummer, this band isn't touring. Try different band!");
-            // };
-            // if(value == 0) {
-            //     console.log("Hmm, I didn't catch that. What band are you looking for?")  
-            // };
-
+            var result  =  JSON.parse(body);
+            
+            for(var i=0; i<=2; i++){
+                let concertResults = "\n" + header + "\n" + "\n \t Artist: " + artist + "\n \t Venue Name: " + result[i].venue.name + "\n \t Venue Location: " + result[i].venue.city + ", " + result[i].venue.region + "\n \t Concert Date: " + moment(result[i].datetime).format("MM/DD/YYYY") +"\n \n" + footer;
+                console.log(concertResults);
+            }; // ends for loop
         };
+
         if (error) { 
             console.log("Oops! Something went wrong")
         };
@@ -106,3 +110,61 @@ let queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_i
 function twitter() {
 
 };
+
+//////////////////////////////////////// Do What It Says ////////////////////////////////////////
+ function doWhatItSays(){
+
+    //  console.log("do what it says, dammit!")
+    fs.readFile("random.txt", "utf8", function(error, data) {
+        if(error){
+            console.log("Oops, something went wrong");
+            return;
+        }
+            let getSong = data.split(",");
+
+                switch(getSong[0]){
+                case "spotify-this-song":
+
+                spotify.search({ type: 'track', query: getSong[1]}, function(error, data) {
+                    if (error){
+                        console.log("Oops, something went wrong.")
+                        return;
+                    }
+
+                    let track = data.tracks.items[0];
+
+                        let tInfo = `
+                        ${header}
+                        Artist: ${track.album.artists[0].name}
+                        Song Title: ${track.name}
+                        Album: ${track.album.name}
+                        View in Spotify: ${track.preview_url}
+                        ${footer}
+                        `
+                        console.log(tInfo);
+                });
+                break;
+            }
+
+
+    });
+}; // ends do what it says fn
+}; // ends liriBot fn
+
+liriBot();
+ 
+
+
+             // switch(getSong[0]){
+            //     case spotify-this-song:
+            //     spotify.search({ type: 'track', query: getSong[1]}, function(error, data) {
+            //         if (error){
+            //             console.log("Oops, something went wrong.")
+            //             return;
+            //         
+
+
+
+
+
+
