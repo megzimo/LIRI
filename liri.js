@@ -49,7 +49,7 @@ function omdbMovie(){
     request(queryURL, function (error, response, body) {
         if(!error && response.statusCode === 200) {
             let json = JSON.parse(body);
-            let movieReturn = "\n" + header + "\n" + "\n \t Title: " + json.Title + "\n \t Release Year: " + json.Year + "\n \t IMDb Rating: " + json.Title + "\n \t Rotten Tomatoes: " + json.Ratings[1].Value + "\n \t Country: " + json.Country + "\n \t Language: " + json.Language + "\n \t Plot: " + json.Plot + "\n \t Cast: "  + json.Actors + "\n \t" + footer;
+            let movieReturn = "\n \t" + header + "\n" + "\n \t Title: " + json.Title + "\n \t Release Year: " + json.Year + "\n \t IMDb Rating: " + json.Title + "\n \t Rotten Tomatoes: " + json.Ratings[1].Value + "\n \t Country: " + json.Country + "\n \t Language: " + json.Language + "\n \t Plot: " + json.Plot + "\n \t Cast: "  + json.Actors + "\n \n \t" + footer;
     
             console.log(movieReturn);
             logLiri(movieReturn);
@@ -140,14 +140,16 @@ function twitter() {
 
                     let track = data.tracks.items[0];
 
-                        let tInfo = `
-                        ${header}
-                        Artist: ${track.album.artists[0].name}
-                        Song Title: ${track.name}
-                        Album: ${track.album.name}
-                        View in Spotify: ${track.preview_url}
-                        ${footer}
-                        `
+    let tInfo = `
+    ${header}
+
+    Artist: ${track.album.artists[0].name}
+    Song Title: ${track.name}
+    Album: ${track.album.name}
+    View in Spotify: ${track.preview_url}
+
+    ${footer}
+    `
                         console.log(tInfo);
                         logLiri(tInfo);
                 });
